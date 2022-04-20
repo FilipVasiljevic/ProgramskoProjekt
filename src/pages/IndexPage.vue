@@ -1,5 +1,5 @@
 <template>
-  <h3 text-center>Za login odaberite vaše ime</h3>
+  <h3 class="text-center">Za login odaberite vaše ime</h3>
   <div class="q-pa-md column q-gutter-sm">
     <q-btn color="primary" label="Dean Ladavec" @click="dean = true" />
     <q-btn color="primary" label="Elvis Jurić" @click="elvis = true" />
