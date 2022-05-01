@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex q-pa-md">
-    Welcome Home
+    Welcome Home {{ user }}
     <q-space />
     <div>
       <q-btn
@@ -19,7 +19,18 @@ import firebase from "firebase";
 export default {
   name: "HomePage",
   data() {
-    return {};
+    return {
+      user: "",
+    };
+  },
+  created() {
+    firebase.auth().onAuthStateChanged((auth) => {
+      if (auth) {
+        this.user = auth.displayName;
+      } else {
+        console.log("user name is null");
+      }
+    });
   },
   methods: {
     logout() {
