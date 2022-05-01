@@ -10,6 +10,13 @@
         @click="logout"
         color="primary"
       />
+            <q-btn
+        class="flex flex-center q-px-lg q-py-sm q-mb-md"
+        size="md"
+        label="Dodavanjer naloga"
+        @click="otvaranjedodavanja"
+        color="primary"
+      />
     </div>
   </q-page>
 </template>
@@ -32,7 +39,11 @@ export default {
       }
     });
   },
-  methods: {
+  methods:{
+
+    otvaranjedodavanja(){
+      this.$router.push("/dodavanje");
+},
     logout() {
       firebase.auth().signOut();
       this.$router
