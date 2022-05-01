@@ -10,11 +10,18 @@
         @click="logout"
         color="primary"
       />
-            <q-btn
+      <q-btn
         class="flex flex-center q-px-lg q-py-sm q-mb-md"
         size="md"
-        label="Dodavanjer naloga"
+        label="Dodavanje naloga"
         @click="otvaranjedodavanja"
+        color="primary"
+      />
+      <q-btn
+        class="flex flex-center q-px-lg q-py-sm q-mb-md"
+        size="md"
+        label="Završavanje naloga"
+        @click="otvaranjezavrsavanja"
         color="primary"
       />
     </div>
@@ -39,11 +46,14 @@ export default {
       }
     });
   },
-  methods:{
-
-    otvaranjedodavanja(){
+  methods: {
+    otvaranjedodavanja() {
       this.$router.push("/dodavanje");
-},
+    },
+    otvaranjezavrsavanja() {
+      this.$router.push("/zavrsavanje");
+    },
+
     logout() {
       firebase.auth().signOut();
       this.$router
