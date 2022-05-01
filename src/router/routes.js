@@ -9,6 +9,11 @@ const routes = [
         component: () => import("pages/HomePage.vue"),
         meta: { requiresAuth: true },
       },
+            {
+        path: "/dodavanje",
+        component: () => import("pages/DodavanjeNaloga.vue"),
+        meta: { requiresAuth: true },
+      },
     ],
   },
 
