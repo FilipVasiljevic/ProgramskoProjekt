@@ -6,6 +6,7 @@ import {
   createWebHashHistory,
 } from "vue-router";
 import routes from "./routes";
+import firebase from "firebase";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAlruCO68db8KaNbIaDa8WnE7IOCBSCBzQ",
