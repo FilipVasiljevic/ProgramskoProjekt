@@ -10,16 +10,16 @@
         @click="logout"
         color="primary"
       />
+    </div>
+    <div class="q-pa-md column q-gutter-sm">
+      <q-btn label="Nalozi" color="primary" />
+      <q-btn label="Korisnici" color="primary" />
       <q-btn
-        class="flex flex-center q-px-lg q-py-sm q-mb-md"
-        size="md"
         label="Dodavanje naloga"
         @click="otvaranjedodavanja"
         color="primary"
       />
       <q-btn
-        class="flex flex-center q-px-lg q-py-sm q-mb-md"
-        size="md"
         label="Završavanje naloga"
         @click="otvaranjezavrsavanja"
         color="primary"

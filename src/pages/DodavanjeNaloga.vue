@@ -1,20 +1,18 @@
-
 <template>
   <div class="q-pa-md" style="max-width: 600px align">
     <h3>Kreiranje servisnih naloga</h3>
-    <q-form
-      @submit="onSubmit"
-      @reset="onReset"
-      class="q-gutter-md"
-    >
-        <ln/>
-       <h5>Podatci o Kupci</h5>
+    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+      <ln />
+      <h5>Podatci o Kupci</h5>
       <q-input
         filled
         v-model="ime"
         label="Ime i prezime kupca"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Molimo unesite ime i prezime kupca']"
+        :rules="[
+          (val) =>
+            (val && val.length > 0) || 'Molimo unesite ime i prezime kupca',
+        ]"
       />
 
       <q-input
@@ -22,18 +20,22 @@
         v-model="kontaktbroj"
         label="Kontakt broj"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Molimo unesite kontakt broj']"
+        :rules="[
+          (val) => (val && val.length > 0) || 'Molimo unesite kontakt broj',
+        ]"
       />
-        <q-separator  />
-        <q-separator  dark/>
-       <h5>Podatci za servis</h5>
+      <q-separator />
+      <q-separator dark />
+      <h5>Podatci za servis</h5>
 
-        <q-input
+      <q-input
         filled
         v-model="nazivArtikla"
         label=" Naziv artikla"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Molimo unesite naziv artikla']"
+        :rules="[
+          (val) => (val && val.length > 0) || 'Molimo unesite naziv artikla',
+        ]"
       />
 
       <q-input
@@ -41,13 +43,14 @@
         v-model="opisServisa"
         label="Opis servisa"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Molimo unesite opis servisa']"
+        :rules="[
+          (val) => (val && val.length > 0) || 'Molimo unesite opis servisa',
+        ]"
       />
-        <div>
+      <div>
         <q-toggle v-model="garantnirok" label="Garantni rok" />
         <q-toggle v-model="podatcibitni" label="Podatci bitni" />
-        </div>
-
+      </div>
 
       <q-uploader
         url="http://localhost:8080/upload"
@@ -55,31 +58,38 @@
         multiple
         style="max-width: 800px"
       />
-  
+
       <div>
-        <q-btn label="Kreiranj nalog" type="submit" color="primary"/>
-        <q-btn label="Obriši formu" type="reset" color="primary" flat class="q-ml-sm" />
+        <q-btn label="Kreiranj nalog" type="submit" color="primary" />
+        <q-btn
+          label="Obriši formu"
+          type="reset"
+          color="primary"
+          flat
+          class="q-ml-sm"
+        />
       </div>
     </q-form>
-
   </div>
 </template>
 
 <script>
-import { useQuasar } from 'quasar'
-import { ref } from 'vue'
+//dodaj nalog
+//dodaj fotografiju
+import { useQuasar } from "quasar";
+import { ref } from "vue";
 
 export default {
-  setup () {
-    const $q = useQuasar()
+  setup() {
+    const $q = useQuasar();
 
-    const ime = ref(null)
-    const kontaktbroj = ref(null)
-    const nazivArtikla = ref(null)
-    const opisServisa = ref(null)
+    const ime = ref(null);
+    const kontaktbroj = ref(null);
+    const nazivArtikla = ref(null);
+    const opisServisa = ref(null);
 
-    const garantnirok = ref(false)
-    const podatcibitni = ref(false)
+    const garantnirok = ref(false);
+    const podatcibitni = ref(false);
 
     return {
       ime,
@@ -90,20 +100,22 @@ export default {
       garantnirok,
       podatcibitni,
 
-      onReset () {
-        ime.value = null
-        kontaktbroj.value = null
-        nazivArtikla.value = null
-        opisServisa.value = null
+      onReset() {
+        ime.value = null;
+        kontaktbroj.value = null;
+        nazivArtikla.value = null;
+        opisServisa.value = null;
 
-        garantnirok.value = false
-        podatcibitni.value = false
-      }
-    }
-  }
-}
+        garantnirok.value = false;
+        podatcibitni.value = false;
+      },
+    };
+  },
+};
 </script>
 
 <style>
-h3 {text-align: center;}
+h3 {
+  text-align: center;
+}
 </style>

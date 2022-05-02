@@ -42,6 +42,7 @@
 </template>
 
 <script>
+//zavrsi nalog
 import { useQuasar } from "quasar";
 import { ref } from "vue";
 
