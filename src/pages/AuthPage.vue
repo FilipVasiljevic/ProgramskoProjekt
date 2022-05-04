@@ -18,7 +18,7 @@
         v-model="formData.password"
       />
       <div class="q-pa-md column q-gutter-sm">
-        <q-btn type="submit" color="primary" :label="tab" />
+        <q-btn type="submit" color="primary" label="Login" />
       </div>
     </q-form>
   </div>
@@ -51,7 +51,7 @@ export default {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
-          this.$q.notify({ message: "Sign In Success." });
+          this.$q.notify({ message: "Uspješno ste se ulogirali!!" });
           this.$router.push("/home");
         })
         .catch((error) => {

@@ -59,7 +59,7 @@ export default {
       this.$router
         .push("/")
         .then(() => {
-          this.$q.notify({ message: "Sign Out Success." });
+          this.$q.notify({ message: "Uspješan logout!!" });
         })
         .catch((error) => console.log("error", error));
     },
