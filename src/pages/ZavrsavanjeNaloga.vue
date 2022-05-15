@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md" style="max-width: 600px align">
-    <h3>Završavanje servisnih naloga</h3>
+    <h4>Završavanje servisnih naloga</h4>
     <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
       <ln />
       <h5>Izvršene usluge / utrošeni materijal</h5>

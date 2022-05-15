@@ -19,6 +19,21 @@ const routes = [
         component: () => import("pages/ZavrsavanjeNaloga.vue"),
         meta: { requiresAuth: true },
       },
+      {
+        path: "/nalozi",
+        component: () => import("pages/NaloziPage.vue"),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "/korisnici",
+        component: () => import("pages/KorisniciPage.vue"),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "/novi",
+        component: () => import("pages/NoviKorisnik.vue"),
+        meta: { requiresAuth: true },
+      },
     ],
   },
 

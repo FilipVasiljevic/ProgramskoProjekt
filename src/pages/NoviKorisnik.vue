@@ -1,8 +1,15 @@
 <template>
   <div>
-    <h4 class="text-center">Za login unjeti email i lozinku</h4>
+    <h4 class="text-center">Kreiranje novog korisnika</h4>
 
     <q-form @submit="submitForm">
+      <!-- <q-input
+        outlined
+        class="q-mb-md"
+        type="name"
+        label="Ime"
+        v-model="formData.name"
+      /> -->
       <q-input
         outlined
         class="q-mb-md"
@@ -18,17 +25,16 @@
         v-model="formData.password"
       />
       <div class="q-pa-md column q-gutter-sm">
-        <q-btn type="submit" color="primary" label="Login" />
+        <q-btn type="submit" color="primary" label="Kreiraj novog korisnika" />
       </div>
     </q-form>
   </div>
 </template>
 
 <script>
-//login
 import firebase from "firebase";
+
 export default {
-  name: "AuthComponent",
   data() {
     return {
       formData: {
@@ -37,17 +43,19 @@ export default {
       },
     };
   },
+
   methods: {
     submitForm() {
-      this.signInExistingUser(this.formData.email, this.formData.password);
+      this.createUser(this.formData.email, this.formData.email);
     },
-    signInExistingUser(email, password) {
+
+    createUser(email, password) {
       firebase
         .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          this.$q.notify({ message: "Uspješno ste se ulogirali!!" });
-          this.$router.push("/home");
+        .createUserWithEmailAndPassword(email, password)
+        .then((email) => {
+          this.$q.notify({ message: "Novi korisnik je kreiran" });
+          this.$router.push("/korisnici");
         })
         .catch((error) => {
           console.log(error);

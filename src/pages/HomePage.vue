@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex q-pa-md">
-    Welcome Home {{ user }}
+    Dobro dosao {{ user }}
     <q-space />
     <div>
       <q-btn
@@ -11,9 +11,9 @@
         color="primary"
       />
     </div>
-    <div class="q-pa-md column q-gutter-sm">
-      <q-btn label="Nalozi" color="primary" />
-      <q-btn label="Korisnici" color="primary" />
+    <div class="flex-center q-pa-md column q-gutter-sm">
+      <q-btn label="Nalozi" color="primary" @click="otvaranjeNaloga" />
+      <q-btn label="Korisnici" color="primary" @click="otvaranjeKorisnika" />
       <q-btn
         label="Dodavanje naloga"
         @click="otvaranjedodavanja"
@@ -42,7 +42,7 @@ export default {
       if (auth) {
         this.user = auth.displayName;
       } else {
-        console.log("user name is null");
+        console.log("username is null");
       }
     });
   },
@@ -52,6 +52,12 @@ export default {
     },
     otvaranjezavrsavanja() {
       this.$router.push("/zavrsavanje");
+    },
+    otvaranjeNaloga() {
+      this.$router.push("/nalozi");
+    },
+    otvaranjeKorisnika() {
+      this.$router.push("/korisnici");
     },
 
     logout() {
