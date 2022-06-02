@@ -8,17 +8,19 @@ brisanje korisnika -->
       label="Kreiranje novog korisnika"
       @click="otvaranjeNovogKorisnika"
     />
+    <q-btn color="primary" label="Obrisi korisnika" />
   </div>
 
   <div class="q-pa-md">
     <q-table
       title="Zaposlenici"
-      :rows="rows"
+      :data="tebleData"
       :columns="columns"
       row-key="name"
       :selected-rows-label="getSelectedString"
       selection="multiple"
       v-model:selected="selected"
+      :rows-per-page-option="[0]"
     />
   </div>
 </template>
@@ -26,60 +28,84 @@ brisanje korisnika -->
 import { ref } from "vue";
 import firebase from "firebase";
 
-const columns = [
-  {
-    name: "ime",
-    required: true,
-    label: "Ime zaposlenika",
-    align: "left",
-    field: (row) => row.name,
-    format: (val) => `${val}`,
-    sortable: true,
-  },
-  {
-    name: "email",
-    label: "E-mail zaposlenika",
-    field: "email",
-    sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
-  },
-];
-
-const rows = [];
-
 export default {
-  setup() {
+  data() {
     const selected = ref([]);
 
     return {
-      selected,
-      columns,
-      rows,
+      selected: [],
+      editRowDialog: false,
+      deleteRowDialog: false,
+      Name: null,
+      Email: null,
+      columns: [
+        {
+          name: "Name",
+          label: "Ime zaposlenika",
+          field: "Name",
+          sortable: true,
+        },
+        {
+          name: "Email",
+          label: "Email zaposlenika",
+          field: "Email",
+          sortable: true,
+        },
+      ],
+      tableData: [],
 
-      getSelectedString() {
-        return selected.value.length === 0
-          ? ""
-          : `${selected.value.length} record${
-              selected.value.length > 1 ? "s" : ""
-            } selected of ${rows.length}`;
-      },
+      // getSelectedString() {
+      //   return selected.value.length === 0
+      //     ? ""
+      //     : `${selected.value.length} record${
+      //         selected.value.length > 1 ? "s" : ""
+      //       } selected of ${rows.length}`;
+      // },
     };
   },
-
-  created() {
-    firebase.firestore().collection("Employees").orderBy("Name").get().then((querySnapshot) =>
-    this.loading = false,
-    querySnapshot.array.forEach(document => {
-      const rows = {
-        ime: document.data().name,
-        email: document.data().email
-      },
-  });)
+  mounted: function () {
+    firebase
+      .firestore()
+      .collection("Employees")
+      .onSnapshot((querySnapshot) => {
+        var buffer = [];
+        querySnapshot.forEach((doc) => {
+          buffer.push({ Name: doc.Name, ...doc.data() });
+          console.log(buffer.data);
+        });
+        this.tableData = buffer;
+        console.log("a");
+      });
   },
+
+  // created() {
+  //   firebase.firestore().collection("Employees").orderBy("Name").get().then((querySnapshot) =>
+  //   this.loading = false,
+  //   querySnapshot.array.forEach(document => {
+  //     const rows = {
+  //       ime: document.data().name,
+  //       email: document.data().email
+  //     },
+  // });)
+  // },
 
   methods: {
     otvaranjeNovogKorisnika() {
       this.$router.push("/novi");
+    },
+
+    retriveCollection() {
+      var objectArray = [];
+      firebase
+        .firestore()
+        .collection("Employees")
+        .get()
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            objectArray.push(doc.data());
+          });
+        });
+      return objectArray;
     },
   },
 };

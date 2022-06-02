@@ -1,4 +1,6 @@
 import firebase from "firebase";
+import "firebase/auth";
+import "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyAlruCO68db8KaNbIaDa8WnE7IOCBSCBzQ",
   authDomain: "evidencijaservisnihnaloga.firebaseapp.com",

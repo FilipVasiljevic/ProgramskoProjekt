@@ -15,7 +15,15 @@
           Aplikacija za vođenje evidencije servisa
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>
+          <q-btn
+            label="Početna stranica"
+            color="white"
+            flat
+            icon="home"
+            @click="homePage"
+          />
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -55,6 +63,11 @@ export default defineComponent({
 
   components: {
     EssentialLink,
+  },
+  methods: {
+    homePage() {
+      this.$router.push("/home");
+    },
   },
 
   setup() {
