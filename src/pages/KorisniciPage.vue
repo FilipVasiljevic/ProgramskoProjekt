@@ -8,7 +8,12 @@ brisanje korisnika -->
       label="Kreiranje novog korisnika"
       @click="otvaranjeNovogKorisnika"
     />
-    <q-btn color="primary" label="Obrisi korisnika" />
+    <q-btn
+      :disable="selected.lenght === 0"
+      color="primary"
+      label="Obrisi korisnika"
+      icon="delete"
+    />
   </div>
 
   <div class="q-pa-md">
@@ -22,8 +27,10 @@ brisanje korisnika -->
       v-model:selected="selected"
       :rows-per-page-option="[0]"
     />
+    Selected: {{ JSON.stringify(selected) }}
   </div>
 </template>
+
 <script>
 import { ref } from "vue";
 import firebase from "firebase";
@@ -75,6 +82,13 @@ export default {
         });
         this.tableData = buffer;
         console.log("a");
+      });
+    firebase
+      .firestore()
+      .collection("Employees")
+      .doc("8UKo3pNw3Wv32qEeOvH0")
+      .onSnapshot((doc) => {
+        console.log("Data: ", doc.data());
       });
   },
 
