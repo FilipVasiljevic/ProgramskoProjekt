@@ -58,35 +58,34 @@ export default {
         Name: name,
         Email: email,
       };
-
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then((email) => {
-          console.log("Ubacen u auth");
+        .then((user) => {
+          firebase
+            .firestore()
+            .collection("Employees")
+            .add(newUser)
+            .then((docRef) => {
+              docRef.set({ Id: docRef.id }, { merge: true });
+              this.$q.notify({ message: "Novi korisnik je kreiran" });
+              this.$router.push("/korisnici");
+              firebase
+                .auth()
+                .currentUser.sendEmailVerification()
+                .then(() => {
+                  this.$q.notify({ message: "Mail poslan" });
+                })
+                .catch((error) => {
+                  this.$q.notify({ message: error });
+                });
+            })
+            .catch((error) => {
+              this.$q.notify({ message: error });
+            });
         })
         .catch((error) => {
-          console.log(error);
-        });
-      firebase
-        .firestore()
-        .collection("Employees")
-        .add(newUser)
-        .then((docRef) => {
-          this.$q.notify({ message: "Novi korisnik je kreiran" });
-          this.$router.push("/korisnici");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      firebase
-        .auth()
-        .currentUser.sendEmailVerification()
-        .then(() => {
-          console.log("Mail poslan");
-        })
-        .catch((error) => {
-          console.log(error);
+          this.$q.notify({ message: error });
         });
     },
   },

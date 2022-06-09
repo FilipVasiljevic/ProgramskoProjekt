@@ -9,25 +9,25 @@ brisanje korisnika -->
       @click="otvaranjeNovogKorisnika"
     />
     <q-btn
-      :disable="selected.lenght === 0"
+      :disable="this.selected.length === 0"
       color="primary"
       label="Obrisi korisnika"
       icon="delete"
+      @click="obrisiKorisnika"
     />
   </div>
 
   <div class="q-pa-md">
     <q-table
       title="Zaposlenici"
-      :data="tebleData"
+      :rows="tableData"
       :columns="columns"
-      row-key="name"
+      row-key="Id"
       :selected-rows-label="getSelectedString"
-      selection="multiple"
+      selection="single"
       v-model:selected="selected"
       :rows-per-page-option="[0]"
     />
-    Selected: {{ JSON.stringify(selected) }}
   </div>
 </template>
 
@@ -75,13 +75,11 @@ export default {
       .firestore()
       .collection("Employees")
       .onSnapshot((querySnapshot) => {
-        var buffer = [];
         querySnapshot.forEach((doc) => {
-          buffer.push({ Name: doc.Name, ...doc.data() });
-          console.log(buffer.data);
+          this.tableData.push(doc.data());
         });
-        this.tableData = buffer;
-        console.log("a");
+
+        console.log(this.tableData);
       });
     firebase
       .firestore()
@@ -106,6 +104,21 @@ export default {
   methods: {
     otvaranjeNovogKorisnika() {
       this.$router.push("/novi");
+    },
+
+    obrisiKorisnika() {
+      firebase
+        .firestore()
+        .collection("Employees")
+        .doc(this.selected[0]["Id"])
+        .delete()
+        .then(() => {
+          this.$q.notify({
+            message:
+              "Korisnik" + this.selected[0]["Name"] + " je uspješno obrisan.",
+          });
+        })
+        .catch((error) => console.log("nesto ne valja"));
     },
 
     retriveCollection() {
