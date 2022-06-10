@@ -52,6 +52,9 @@ export default {
         })
         .catch((error) => {
           console.log(error);
+          this.$q.notify({
+            message: "Potrebno je unjeti valjani email i lozinku",
+          });
         });
     },
   },

@@ -13,7 +13,7 @@ brisanje korisnika -->
       color="primary"
       label="Obrisi korisnika"
       icon="delete"
-      @click="obrisiKorisnika"
+      @click="obrisiKorisnika()"
     />
   </div>
 
@@ -28,6 +28,7 @@ brisanje korisnika -->
       v-model:selected="selected"
       :rows-per-page-option="[0]"
     />
+    Selected: {{ JSON.stringify(selected) }}
   </div>
 </template>
 
@@ -81,13 +82,6 @@ export default {
 
         console.log(this.tableData);
       });
-    firebase
-      .firestore()
-      .collection("Employees")
-      .doc("8UKo3pNw3Wv32qEeOvH0")
-      .onSnapshot((doc) => {
-        console.log("Data: ", doc.data());
-      });
   },
 
   // created() {
@@ -115,7 +109,7 @@ export default {
         .then((docReference) => {
           this.$q.notify({
             message:
-              "Korisnik" + this.selected[0]["Name"] + " je uspješno obrisan.",
+              "Korisnik " + this.selected[0]["Name"] + " je uspješno obrisan.",
           });
         })
         .catch((error) => console.log("nesto ne valja"));
