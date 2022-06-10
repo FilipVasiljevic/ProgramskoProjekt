@@ -110,9 +110,9 @@ export default {
       firebase
         .firestore()
         .collection("Employees")
-        .doc(this.selected[0]["Id"])
+        .doc(this.selected[0]["Id"].toString().trim())
         .delete()
-        .then(() => {
+        .then((docReference) => {
           this.$q.notify({
             message:
               "Korisnik" + this.selected[0]["Name"] + " je uspješno obrisan.",

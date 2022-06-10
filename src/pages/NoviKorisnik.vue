@@ -49,7 +49,7 @@ export default {
       this.createUser(
         this.formData.name,
         this.formData.email,
-        this.formData.email
+        this.formData.password
       );
     },
 
