@@ -14,28 +14,27 @@
         <q-toolbar-title>
           Aplikacija za vođenje evidencije servisa
         </q-toolbar-title>
-
-        <div>
-          <q-btn
-            label="Početna stranica"
-            color="white"
-            flat
-            icon="home"
-            @click="homePage"
-          />
-        </div>
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label header> Essential Links </q-item-label>
+        <q-item clickable v-ripple @click="homePage">
+          <q-item-section> Početna stranica </q-item-section>
+        </q-item>
+        <q-separator :key="'sep1'" />
+        <q-item clickable v-ripple @click="otvaranjeKorisnika">
+          <q-item-section> Korisnici </q-item-section>
+        </q-item>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <q-item clickable v-ripple @click="otvaranjeNaloga">
+          <q-item-section> Nalozi </q-item-section>
+        </q-item>
+        <q-separator :key="'sep3'" />
+
+        <q-item clickable v-ripple @click="logout">
+          <q-item-section> Odjava </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
@@ -47,26 +46,28 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import EssentialLink from "components/EssentialLink.vue";
-
-const linksList = [
-  {
-    title: "Github",
-    caption: "Projekt programsko",
-    icon: "code",
-    link: "https://github.com/FilipVasiljevic/ProgramskoProjekt",
-  },
-];
+import firebase from "firebase";
 
 export default defineComponent({
   name: "MainLayout",
-
-  components: {
-    EssentialLink,
-  },
   methods: {
     homePage() {
       this.$router.push("/home");
+    },
+    otvaranjeNaloga() {
+      this.$router.push("/nalozi");
+    },
+    otvaranjeKorisnika() {
+      this.$router.push("/korisnici");
+    },
+    logout() {
+      firebase.auth().signOut();
+      this.$router
+        .push("/")
+        .then(() => {
+          this.$q.notify({ message: "Uspješan logout!!" });
+        })
+        .catch((error) => console.log("error", error));
     },
   },
 
@@ -74,7 +75,6 @@ export default defineComponent({
     const leftDrawerOpen = ref(false);
 
     return {
-      essentialLinks: linksList,
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
