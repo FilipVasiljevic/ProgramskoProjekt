@@ -1,6 +1,3 @@
-<!-- dodavanje naloga
-pregled naloga
-zavrsavanje naloga -->
 <template>
   <div class="q-pa-md column q-gutter-sm">
     <q-btn
@@ -22,19 +19,24 @@ zavrsavanje naloga -->
       icon="delete"
       @click="obrisiNalog()"
     />
-  </div>
-  <div class="q-pa-md">
+    <q-btn
+      :disable="this.selected.length === 0"
+      color="primary"
+      label="print"
+      icon="print"
+      @click="print"
+    />
+    <q-separator />
     <q-table
+      v-model:selected="selected"
       title="Nalozi u tijeku"
       :rows="tableData"
       :columns="columns"
       row-key="Id"
-      :selected-rows-label="getSelectedString"
       selection="single"
-      v-model:selected="selected"
-      :rows-per-page-option="[0]"
     />
-    Selected: {{ JSON.stringify(selected) }}
+
+    Selected: {{ JSON.stringify({ selected }, null, "\t") }}
   </div>
 </template>
 
@@ -49,7 +51,7 @@ export default {
       editRowDialog: false,
       deleteRowDialog: false,
       Article: null,
-      //Costumer: [Name, PhoneNumber],
+      //Customer: [Name, PhoneNumber],
       Description: null,
       Done: null,
       EssentialData: null,
@@ -77,26 +79,26 @@ export default {
         },
         {
           name: "OrderDate",
-          label: "Zaprimljeno",
+          label: "Nalog zaprimljen (datum)",
           field: "OrderDate",
           sortable: true,
         },
         {
           name: "WarratntyPeriod",
           label: "Garancija",
-          field: "WarratntyPeriod",
+          field: "WarrantyPeriod",
           sortable: true,
         },
         {
-          name: "Costumer.Name",
+          name: "Customer.Name",
           label: "Ime kupca",
-          field: "Costumer.Name",
+          field: (row) => row.Customer.Name,
           sortable: true,
         },
         {
-          name: "Costumer.PhoneNumber",
-          label: "Ime kupca",
-          field: "Costumer.PhoneNumber",
+          name: "Customer.PhoneNumber",
+          label: "Broj kupca",
+          field: (row) => row.Customer.PhoneNumber,
           sortable: true,
         },
       ],
@@ -108,22 +110,47 @@ export default {
       .firestore()
       .collection("ServiceOrders")
       .onSnapshot((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          this.tableData.push(doc.data());
-        });
+        for (var i = 0; i < querySnapshot.docs.length; i++) {
+          this.tableData.push(querySnapshot.docs[i].data());
+          console.log(this.tableData[i].Customer);
+          this.tableData[i].WarrantyPeriod = querySnapshot.docs[i].data()
+            .WarrantyPeriod
+            ? "Da"
+            : "Ne";
+
+          this.tableData[i].EssentialData = querySnapshot.docs[i].data()
+            .EssentialData
+            ? "Da"
+            : "Ne";
+        }
 
         console.log(this.tableData);
       });
   },
 
   methods: {
+    proba(data) {
+      console.log(data);
+    },
     otvoriNoviNalog() {
       this.$router.push("/dodavanje");
     },
     zavrsiNalog() {
       this.$router.push("/zavrsavanje");
     },
-    obrisiNalog() {},
+    obrisiNalog() {
+      firebase
+        .firestore()
+        .collection("ServiceOrders")
+        .doc(this.selected[0].Id)
+        .delete()
+        .then((docRef) => {
+          this.$q.notify({ message: "Uspješno ste izbrisali servisni nalog" });
+        })
+        .catch((error) => {
+          this.$q.notify({ message: error });
+        });
+    },
     retriveCollection() {
       var objectArray = [];
       firebase
