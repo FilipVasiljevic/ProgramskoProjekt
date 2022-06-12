@@ -15,7 +15,7 @@ const routes = [
       },
       {
         path: "/dodavanje",
-        component: () => import("pages/DodavanjeNaloga.vue"),
+        component: () => import("pages/NaloziDodavanje.vue"),
         meta: { requiresAuth: true },
       },
       {
