@@ -81,8 +81,8 @@ import { ref } from "vue";
 import { date } from "quasar";
 import firebase from "firebase";
 
-const nalogDate = date.formatDate(Date.now(), "YYYY-MM-DDTHH:mm:ss.SSSZ");
-console.log(nalogDate);
+var nalogDate;
+//console.log(nalogDate);
 export default {
   data() {
     return {
@@ -113,16 +113,19 @@ export default {
 
   methods: {
     submitForm() {
-      (this.formData.Received = firebase.auth().currentUser),
-        this.createNalog(
-          this.formData.Costumer,
-          this.formData.Article,
-          this.formData.Description,
-          this.formData.EssentialData,
-          this.formData.OrderDate,
-          this.formData.Received,
-          this.formData.WarrantyPeriod
-        );
+      this.formData.Received = firebase.auth().currentUser;
+      let nalogDate = date.formatDate(Date.now(), "YYYY-MM-DDTHH:mm:ss.SSSZ");
+      console.log(nalogDate);
+      this.formData.OrderDate = nalogDate;
+      this.createNalog(
+        this.formData.Costumer,
+        this.formData.Article,
+        this.formData.Description,
+        this.formData.EssentialData,
+        this.formData.OrderDate,
+        this.formData.Received,
+        this.formData.WarrantyPeriod
+      );
     },
     createNalog(
       costumer,
@@ -147,7 +150,6 @@ export default {
         .collection("ServiceOrders")
         .add(newNalog)
         .then((docRef) => {
-          docRef.set({ Id: docRef.id }, { merge: true });
           this.$q.notify({ message: "Novi nalog je spremljen" });
           this.$router.push("/nalozi");
         })
