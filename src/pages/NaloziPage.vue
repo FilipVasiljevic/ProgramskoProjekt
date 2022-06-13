@@ -27,26 +27,53 @@
       @click="print"
     />
     <q-separator />
-    <q-table
-      v-model:selected="selected"
-      title="Nalozi u tijeku"
-      :rows="tableData"
-      :columns="columns"
-      row-key="Id"
-      selection="single"
-    />
 
-    Selected: {{ JSON.stringify({ selected }, null, "\t") }}
+    <q-tabs
+      v-model="tab"
+      dense
+      class="text-grey"
+      active-color="primary"
+      indicator-color="primary"
+      align="justify"
+      narrow-indicator
+    >
+      <q-tab name="inprogress" label="Nalozi u tijeku" />
+      <q-tab name="finished" label="Završeni nalozi" />
+    </q-tabs>
+
+    <q-separator />
+
+    <q-tab-panels v-model="tab" animated>
+      <q-tab-panel name="inprogress">
+        <q-table
+          v-model:selected="selected"
+          :rows="inProgressData.filter((item) => item.Done === false)"
+          :columns="columns"
+          row-key="Id"
+          selection="single"
+        />
+      </q-tab-panel>
+
+      <q-tab-panel name="finished">
+        <q-table
+          :rows="finishedData.filter((item) => item.Done === true)"
+          :columns="columns"
+          row-key="Id"
+        />
+      </q-tab-panel>
+    </q-tab-panels>
   </div>
 </template>
 
 <script>
+import { ref } from "vue";
 import firebase from "firebase";
 export default {
   name: "NaloziPage",
   data() {
     //const selected = ref([]);
     return {
+      tab: ref("inprogress"),
       selected: [],
       editRowDialog: false,
       deleteRowDialog: false,
@@ -101,8 +128,15 @@ export default {
           field: (row) => row.Customer.PhoneNumber,
           sortable: true,
         },
+        {
+          name: "TotalPrice",
+          label: "Cijena usluge",
+          field: "TotalPrice",
+          sortable: true,
+        },
       ],
-      tableData: [],
+      inProgressData: [],
+      finishedData: [],
     };
   },
   mounted: function () {
@@ -111,20 +145,17 @@ export default {
       .collection("ServiceOrders")
       .onSnapshot((querySnapshot) => {
         for (var i = 0; i < querySnapshot.docs.length; i++) {
-          this.tableData.push(querySnapshot.docs[i].data());
-          console.log(this.tableData[i].Customer);
-          this.tableData[i].WarrantyPeriod = querySnapshot.docs[i].data()
+          this.inProgressData.push(querySnapshot.docs[i].data());
+          this.inProgressData[i].WarrantyPeriod = querySnapshot.docs[i].data()
             .WarrantyPeriod
             ? "Da"
             : "Ne";
-
-          this.tableData[i].EssentialData = querySnapshot.docs[i].data()
+          this.inProgressData[i].EssentialData = querySnapshot.docs[i].data()
             .EssentialData
             ? "Da"
             : "Ne";
         }
-
-        console.log(this.tableData);
+        this.finishedData = [...this.inProgressData];
       });
   },
 
@@ -136,7 +167,10 @@ export default {
       this.$router.push("/dodavanje");
     },
     zavrsiNalog() {
-      this.$router.push("/zavrsavanje");
+      this.$router.push({
+        path: "/zavrsavanje/" + this.selected[0].Id,
+        params: { id: this.selected[0].Id },
+      });
     },
     obrisiNalog() {
       firebase

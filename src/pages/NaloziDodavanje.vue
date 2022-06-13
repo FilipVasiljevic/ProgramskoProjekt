@@ -131,6 +131,7 @@ export default {
           Name: this.formData.Customer.Name,
           PhoneNumber: this.formData.Customer.PhoneNumber,
         },
+        Done: false,
         Article: this.formData.Article,
         Description: this.formData.Description,
         EssentialData: this.formData.EssentialData,

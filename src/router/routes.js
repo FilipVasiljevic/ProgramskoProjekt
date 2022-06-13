@@ -19,9 +19,10 @@ const routes = [
         meta: { requiresAuth: true },
       },
       {
-        path: "/zavrsavanje",
+        path: "/zavrsavanje/:id",
         component: () => import("pages/ZavrsavanjeNaloga.vue"),
         meta: { requiresAuth: true },
+        props: true,
       },
       {
         path: "/nalozi",
