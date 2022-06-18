@@ -124,7 +124,7 @@ export default {
         },
         {
           name: "Customer.PhoneNumber",
-          label: "Broj kupca",
+          label: "Broj telefona kupca",
           field: (row) => row.Customer.PhoneNumber,
           sortable: true,
         },

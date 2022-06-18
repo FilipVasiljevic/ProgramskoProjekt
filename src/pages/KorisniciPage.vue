@@ -28,7 +28,7 @@ brisanje korisnika -->
       v-model:selected="selected"
       :rows-per-page-option="[0]"
     />
-    Selected: {{ JSON.stringify(selected) }}
+    <!-- Selected: {{ JSON.stringify(selected) }} -->
   </div>
 </template>
 

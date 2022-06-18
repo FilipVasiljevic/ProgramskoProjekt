@@ -42,7 +42,7 @@ export default {
       this.signInExistingUser(this.formData.email, this.formData.password);
     },
     signInExistingUser(email, password) {
-      console.log(email, password);
+      //console.log(email, password);
       firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
